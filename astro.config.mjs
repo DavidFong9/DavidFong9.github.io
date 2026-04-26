@@ -5,6 +5,7 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+  base: '/fangh750.github.io',
   integrations: [
     starlight({
       title: '我的技术博客',
