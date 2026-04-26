@@ -1,0 +1,79 @@
+---
+
+---
+
+<button id="theme-toggle" class="theme-toggle" aria-label="切换主题">
+  <svg class="icon sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <circle cx="12" cy="12" r="5"/>
+    <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+  </svg>
+  <svg class="icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+  </svg>
+</button>
+
+<script>
+  const toggle = document.getElementById('theme-toggle');
+
+  const setTheme = (theme: string) => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateIcons(theme);
+  };
+
+  const updateIcons = (theme: string) => {
+    const sun = document.querySelector('.sun') as SVGSVGElement;
+    const moon = document.querySelector('.moon') as SVGSVGElement;
+    if (sun && moon) {
+      sun.style.display = theme === 'dark' ? 'block' : 'none';
+      moon.style.display = theme === 'light' ? 'block' : 'none';
+    }
+  };
+
+  toggle?.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'light' : 'dark');
+  });
+
+  // Initialize icon state
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+  updateIcons(currentTheme);
+</script>
+
+<style>
+  .theme-toggle {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    box-shadow: 0 0 15px var(--accent-glow);
+  }
+
+  .icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .sun {
+    display: none;
+  }
+
+  .moon {
+    display: block;
+  }
+</style>

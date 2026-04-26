@@ -1,18 +1,20 @@
 {
-  "name": "blog",
+  "name": "tech-blog",
   "type": "module",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "engines": {
     "node": ">=22.12.0"
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && pagefind --site dist",
     "preview": "astro preview",
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/starlight": "^0.38.4",
     "astro": "^6.1.9"
+  },
+  "devDependencies": {
+    "pagefind": "^1.2.0"
   }
 }

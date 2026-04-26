@@ -1,0 +1,211 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  // 静态文章内容
+  const staticPosts: Record<string, any> = {
+    'intro': {
+      title: '博客文章',
+      description: '我的技术文章集合',
+      pubDate: new Date('2026-04-26'),
+      tags: ['介绍'],
+      content: `
+<h1>博客文章</h1>
+<p>这里是我的技术文章集合，涵盖了我在学习和工作中的各种技术探索。</p>
+<h2>文章分类</h2>
+<h3>前端开发</h3>
+<ul>
+<li>JavaScript/TypeScript</li>
+<li>React/Vue</li>
+<li>CSS/样式设计</li>
+</ul>
+<h3>后端开发</h3>
+<ul>
+<li>Node.js</li>
+<li>Python</li>
+<li>数据库设计</li>
+</ul>
+<h3>工具与效率</h3>
+<ul>
+<li>Git 版本控制</li>
+<li>开发工具配置</li>
+<li>自动化脚本</li>
+</ul>
+<hr>
+<p>更多内容持续更新中...</p>
+      `
+    }
+  };
+
+  const paths: any[] = [];
+
+  try {
+    const posts = await getCollection('blog');
+    paths.push(...posts.map(post => ({
+      params: { slug: post.slug },
+      props: { entry: post, fromCollection: true },
+    })));
+  } catch (e) {
+    // Content collection not available
+  }
+
+  // 如果没有从 collection 获取到文章，使用静态文章
+  if (paths.length === 0) {
+    Object.keys(staticPosts).forEach(slug => {
+      paths.push({
+        params: { slug },
+        props: { fromCollection: false, staticData: staticPosts[slug] },
+      });
+    });
+  }
+
+  return paths;
+}
+
+interface Props {
+  entry?: CollectionEntry<'blog'>;
+  fromCollection: boolean;
+  staticData?: {
+    title: string;
+    description: string;
+    pubDate: Date;
+    tags: string[];
+    content: string;
+  };
+}
+
+const { entry, fromCollection, staticData } = Astro.props;
+
+let title: string;
+let description: string;
+let pubDate: Date;
+let tags: string[] = [];
+let htmlContent: string;
+
+if (fromCollection && entry) {
+  const rendered = await entry.render();
+  title = entry.data.title;
+  description = entry.data.description;
+  pubDate = entry.data.pubDate;
+  tags = entry.data.tags || [];
+  htmlContent = rendered.html;
+} else if (staticData) {
+  title = staticData.title;
+  description = staticData.description;
+  pubDate = staticData.pubDate;
+  tags = staticData.tags;
+  htmlContent = staticData.content;
+} else {
+  title = '文章未找到';
+  description = '';
+  pubDate = new Date();
+  htmlContent = '<p>文章未找到</p>';
+}
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="blog-post">
+    <header class="post-header">
+      <h1>{title}</h1>
+      <div class="meta">
+        <time datetime={pubDate.toISOString()}>
+          {pubDate.toLocaleDateString('zh-CN')}
+        </time>
+        {tags.length > 0 && (
+          <div class="tag-list">
+            {tags.map(tag => (
+              <a href={`/tags/${tag}`} class="tag">{tag}</a>
+            ))}
+          </div>
+        )}
+      </div>
+    </header>
+
+    <div class="post-content" set:html={htmlContent} />
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+  }
+
+  .post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-header h1 {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+
+  .tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .post-content {
+    line-height: 1.8;
+  }
+
+  .post-content :global(h2) {
+    margin-top: 2.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .post-content :global(h3) {
+    margin-top: 2rem;
+  }
+
+  .post-content :global(ul) {
+    padding-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .post-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .post-content :global(hr) {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+</style>
