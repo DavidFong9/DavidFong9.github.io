@@ -2,6 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import SearchBox from '../components/SearchBox.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -36,5 +37,6 @@ const { title, description = '探索技术，分享见解' } = Astro.props;
       <Footer />
     </div>
     <ThemeToggle />
+    <SearchBox />
   </body>
 </html>

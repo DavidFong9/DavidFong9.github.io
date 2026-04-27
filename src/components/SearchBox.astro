@@ -1,0 +1,134 @@
+---
+// Search overlay using Pagefind static search
+---
+
+<div id="search-overlay" class="search-overlay">
+  <div class="search-backdrop"></div>
+  <div class="search-modal">
+    <div class="pagefind-ui" id="pagefind-search"></div>
+  </div>
+</div>
+
+<script>
+  let pagefindUI = null;
+  const overlay = document.getElementById('search-overlay');
+  const backdrop = overlay.querySelector('.search-backdrop');
+
+  function openSearch() {
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    if (pagefindUI) return;
+
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/pagefind/pagefind-ui.css';
+    document.head.appendChild(link);
+
+    const script = document.createElement('script');
+    script.src = '/pagefind/pagefind-ui.js';
+    script.onload = () => {
+      pagefindUI = new PagefindUI({
+        element: '#pagefind-search',
+        showSubResults: true,
+        showImages: false,
+        resetStyles: false,
+      });
+    };
+    document.body.appendChild(script);
+  }
+
+  function closeSearch() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Keyboard shortcut
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      openSearch();
+    }
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeSearch();
+    }
+  });
+
+  // Custom event from search button
+  document.addEventListener('open-search', openSearch);
+
+  // Close on backdrop click
+  backdrop.addEventListener('click', closeSearch);
+</script>
+
+<style>
+  .search-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10vh;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .search-overlay.open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .search-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+  }
+
+  .search-modal {
+    position: relative;
+    width: 90%;
+    max-width: 640px;
+    max-height: 70vh;
+    overflow-y: auto;
+    background: var(--bg-primary, #1a1a2e);
+    border: 1px solid var(--border, #2a2a4a);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Pagefind UI overrides for dark theme */
+  .search-modal :global(.pagefind-ui__search-input) {
+    background: var(--bg-secondary, #16213e) !important;
+    border-color: var(--border, #2a2a4a) !important;
+    color: var(--text-primary, #e0e0e0) !important;
+    border-radius: 8px !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important;
+  }
+
+  .search-modal :global(.pagefind-ui__search-input::placeholder) {
+    color: var(--text-secondary, #888) !important;
+  }
+
+  .search-modal :global(.pagefind-ui__result) {
+    border-bottom-color: var(--border, #2a2a4a) !important;
+    padding: 1rem 0 !important;
+  }
+
+  .search-modal :global(.pagefind-ui__result-title) {
+    color: var(--accent, #4fc3f7) !important;
+  }
+
+  .search-modal :global(.pagefind-ui__result-excerpt) {
+    color: var(--text-secondary, #888) !important;
+  }
+
+  .search-modal :global(.pagefind-ui__result-excerpt mark) {
+    background: rgba(79, 195, 247, 0.2) !important;
+    color: var(--text-primary, #e0e0e0) !important;
+  }
+</style>
