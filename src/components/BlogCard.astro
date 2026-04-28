@@ -10,7 +10,7 @@ const { post } = Astro.props;
 const { title, description, pubDate, tags = [] } = post.data;
 ---
 
-<a href={`/blog/${post.slug}`} class="blog-card card">
+<a href={`/blog/${post.id}`} class="blog-card card">
   <article>
     <h3 class="title">{title}</h3>
     <p class="description">{description}</p>

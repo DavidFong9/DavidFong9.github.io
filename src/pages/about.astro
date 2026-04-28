@@ -1,40 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
+import { getCollection, render } from 'astro:content';
 
 const pages = await getCollection('pages');
-const aboutPage = pages.find(p => p.slug === 'about');
+const aboutPage = pages.find(p => p.id === 'about');
+const { Content } = aboutPage ? await render(aboutPage) : { Content: null };
 ---
 
 <BaseLayout title="关于">
   <article class="about-page">
-    {aboutPage ? (
-      <div class="content" set:html={await aboutPage.render().then(r => r.html)} />
-    ) : (
-      <div class="content">
-        <h1>关于我</h1>
-        <p>你好！欢迎来到我的博客。</p>
-        <h2>我是谁</h2>
-        <p>我是一名对技术充满热情的开发者，喜欢探索新技术并分享学习心得。</p>
-        <h2>技术栈</h2>
-        <ul>
-          <li>前端：JavaScript, TypeScript, React, Vue</li>
-          <li>后端：Node.js, Python</li>
-          <li>工具：Git, Docker, Linux</li>
-        </ul>
-        <h2>联系方式</h2>
-        <p>欢迎通过以下方式联系我：</p>
-        <ul>
-          <li>GitHub: <a href="https://github.com/DavidFong9">DavidFong9</a></li>
-        </ul>
-      </div>
-    )}
+    <div class="content">
+      {Content ? <Content /> : <p>关于页面内容未找到。</p>}
+    </div>
   </article>
 </BaseLayout>
 
 <style>
   .about-page {
-    max-width: 800px;
+    max-width: 700px;
     margin: 0 auto;
     padding: 2rem 0;
   }
@@ -46,10 +29,7 @@ const aboutPage = pages.find(p => p.slug === 'about');
   .content :global(h1) {
     font-size: 2.25rem;
     margin-bottom: 1.5rem;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
   }
 
   .content :global(h2) {

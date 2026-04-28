@@ -1,4 +1,6 @@
 ---
+import Mascot from './Mascot.astro';
+
 const navLinks = [
   { label: '首页', href: '/' },
   { label: '博客', href: '/blog' },
@@ -9,7 +11,7 @@ const navLinks = [
 <header class="header">
   <nav class="nav">
     <a href="/" class="logo">
-      <span class="logo-icon">&lt;/&gt;</span>
+      <Mascot size={32} />
       <span class="logo-text">Tech Blog</span>
     </a>
 
@@ -43,7 +45,7 @@ const navLinks = [
     position: sticky;
     top: 0;
     background: var(--bg-primary);
-    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 var(--border);
     z-index: 100;
   }
 
@@ -62,16 +64,8 @@ const navLinks = [
     color: var(--text-primary);
   }
 
-  .logo-icon {
-    color: var(--accent);
-    font-family: monospace;
-  }
-
   .logo-text {
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
   }
 
   .nav-links {
@@ -101,7 +95,7 @@ const navLinks = [
     left: 0;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    background: var(--accent);
     transition: width 0.2s ease;
   }
 

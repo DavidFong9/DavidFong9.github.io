@@ -1,12 +1,9 @@
+
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: join(__dirname, 'src/content/blog') }),
+  loader: glob({ pattern: '**/*.md', base: 'src/content/blog' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -19,7 +16,7 @@ const blog = defineCollection({
 });
 
 const pages = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: join(__dirname, 'src/content/pages') }),
+  loader: glob({ pattern: '**/*.md', base: 'src/content/pages' }),
   schema: z.object({
     title: z.string(),
     description: z.string().optional(),

@@ -1,0 +1,66 @@
+---
+interface Props {
+  size?: number;
+  showBody?: boolean;
+}
+
+const { size = 48, showBody = false } = Astro.props;
+---
+
+<svg
+  class="mascot"
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={showBody ? "0 0 120 150" : "0 0 100 100"}
+  width={size}
+  height={showBody ? size * 1.25 : size}
+  aria-label="猫头鹰吉祥物"
+>
+  {showBody ? (
+    <>
+      <!-- 身体 -->
+      <ellipse cx="60" cy="115" rx="35" ry="30" fill="var(--bg-card)" stroke="var(--border)" stroke-width="1.5"/>
+      <!-- 左翼 -->
+      <ellipse cx="30" cy="110" rx="16" ry="24" fill="#d97706" transform="rotate(12 30 110)"/>
+      <!-- 右翼 -->
+      <ellipse cx="90" cy="110" rx="16" ry="24" fill="#d97706" transform="rotate(-12 90 110)"/>
+      <!-- 左爪趾 -->
+      <circle cx="37" cy="141" r="3" fill="#d97706"/>
+      <circle cx="43" cy="142" r="3" fill="#d97706"/>
+      <circle cx="49" cy="141" r="3" fill="#d97706"/>
+      <!-- 右爪趾 -->
+      <circle cx="71" cy="141" r="3" fill="#d97706"/>
+      <circle cx="77" cy="142" r="3" fill="#d97706"/>
+      <circle cx="83" cy="141" r="3" fill="#d97706"/>
+    </>
+  ) : null}
+  <!-- 耳羽 -->
+  <polygon points="26,38 8,2 46,24" fill="#78350f"/>
+  <polygon points="74,38 92,2 54,24" fill="#78350f"/>
+  <!-- 头部 -->
+  <circle cx="50" cy="48" r="40" fill="#d97706"/>
+  <!-- 左眼白色面盘 -->
+  <circle cx="34" cy="46" r="17" fill="#fef3c7"/>
+  <!-- 右眼白色面盘 -->
+  <circle cx="66" cy="46" r="17" fill="#fef3c7"/>
+  <!-- 左瞳孔 -->
+  <circle cx="34" cy="46" r="7" fill="#451a03"/>
+  <!-- 右瞳孔 -->
+  <circle cx="66" cy="46" r="7" fill="#451a03"/>
+  <!-- 瞳孔高光 -->
+  <circle cx="32" cy="44" r="2.5" fill="white" opacity="0.7"/>
+  <circle cx="64" cy="44" r="2.5" fill="white" opacity="0.7"/>
+  <!-- 喙 -->
+  <polygon points="46,64 50,73 54,64" fill="#f59e0b"/>
+  <!-- 腮红 -->
+  <ellipse cx="20" cy="58" rx="6" ry="3.5" fill="#fbbf24" opacity="0.3"/>
+  <ellipse cx="80" cy="58" rx="6" ry="3.5" fill="#fbbf24" opacity="0.3"/>
+</svg>
+
+<style>
+  .mascot {
+    display: inline-block;
+    vertical-align: middle;
+    user-select: none;
+    pointer-events: none;
+  }
+</style>

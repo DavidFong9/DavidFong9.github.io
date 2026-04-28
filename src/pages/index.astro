@@ -2,32 +2,11 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 尝试获取内容，如果失败则使用默认内容
-let posts: any[] = [];
-try {
-  const allPosts = await getCollection('blog');
-  posts = allPosts
-    .filter(post => !post.data.draft)
-    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-    .slice(0, 6);
-} catch (e) {
-  console.log('Content collection not available');
-}
-
-// 默认文章列表
-const defaultPosts = [
-  {
-    slug: 'intro',
-    data: {
-      title: '博客文章',
-      description: '我的技术文章集合，涵盖了我在学习和工作中的各种技术探索',
-      pubDate: new Date('2026-04-26'),
-      tags: ['介绍'],
-    }
-  }
-];
-
-const displayPosts = posts.length > 0 ? posts : defaultPosts;
+const allPosts = await getCollection('blog');
+const posts = allPosts
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 6);
 ---
 
 <BaseLayout title="首页">
@@ -43,8 +22,8 @@ const displayPosts = posts.length > 0 ? posts : defaultPosts;
   <section class="latest-posts">
     <h2>最新文章</h2>
     <div class="posts-grid">
-      {displayPosts.map(post => (
-        <a href={`/blog/${post.slug}`} class="blog-card card">
+      {posts.map(post => (
+        <a href={`/blog/${post.id}`} class="blog-card card">
           <article>
             <h3 class="title">{post.data.title}</h3>
             <p class="description">{post.data.description}</p>
@@ -79,10 +58,9 @@ const displayPosts = posts.length > 0 ? posts : defaultPosts;
   .hero h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.02em;
   }
 
   .subtitle {

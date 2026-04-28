@@ -1,33 +1,69 @@
 /* CSS 变量 - 亮色主题 */
 :root {
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8fafc;
+  /* 表面色 */
+  --bg-primary: #faf9f7;
+  --bg-secondary: #f4f3f0;
   --bg-card: #ffffff;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
-  --accent-glow: rgba(59, 130, 246, 0.3);
-  --border: #e2e8f0;
-  --code-bg: #f1f5f9;
-  --gradient-start: #3b82f6;
-  --gradient-end: #8b5cf6;
+  --bg-overlay: rgba(0, 0, 0, 0.04);
+
+  /* 文字色 */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6b7280;
+  --text-muted: #9ca3af;
+
+  /* 强调色 */
+  --accent: #d97706;
+  --accent-hover: #b85c04;
+  --accent-subtle: rgba(217, 119, 6, 0.08);
+  --accent-text: #b85c04;
+
+  /* 边框 */
+  --border: #e6e5e1;
+  --border-light: #efeeeb;
+
+  /* 代码 */
+  --code-bg: #eeece7;
+  --code-border: #e0ded9;
+
+  /* 阴影 */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.08);
+
+  /* 圆角 */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
 }
 
-/* CSS 变量 - 深色科技主题 */
+/* CSS 变量 - 深色主题 */
 [data-theme="dark"] {
-  --bg-primary: #0a0e17;
-  --bg-secondary: #0d121f;
-  --bg-card: #111827;
-  --text-primary: #e0e6ed;
-  --text-secondary: #94a3b8;
-  --accent: #00d4ff;
-  --accent-hover: #00b8e6;
-  --accent-glow: rgba(0, 212, 255, 0.3);
-  --border: #1e293b;
-  --code-bg: #151c2e;
-  --gradient-start: #00d4ff;
-  --gradient-end: #7c3aed;
+  --bg-primary: #171717;
+  --bg-secondary: #1c1c1c;
+  --bg-card: #242424;
+  --bg-overlay: rgba(255, 255, 255, 0.04);
+
+  --text-primary: #e8e6e3;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  --accent: #f59e0b;
+  --accent-hover: #fbbf24;
+  --accent-subtle: rgba(245, 158, 11, 0.12);
+  --accent-text: #f59e0b;
+
+  --border: #2e2e2e;
+  --border-light: #262626;
+
+  --code-bg: #1e1e1e;
+  --code-border: #333333;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 /* 基础重置 */
@@ -43,12 +79,14 @@ html {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.7;
   min-height: 100vh;
   transition: background-color 0.3s ease, color 0.3s ease;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 布局 */
@@ -68,7 +106,7 @@ body {
 a {
   color: var(--accent);
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 a:hover {
@@ -82,10 +120,10 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5em;
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 2rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 { font-size: 2.25rem; font-weight: 700; letter-spacing: -0.02em; }
+h2 { font-size: 1.625rem; font-weight: 600; letter-spacing: -0.015em; }
+h3 { font-size: 1.25rem; font-weight: 600; }
+h4 { font-size: 1.125rem; font-weight: 600; }
 
 /* 段落 */
 p {
@@ -94,17 +132,18 @@ p {
 
 /* 代码 */
 code {
-  font-family: 'Fira Code', 'SF Mono', Consolas, monospace;
-  font-size: 0.9em;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Consolas, monospace;
+  font-size: 0.875em;
   padding: 0.2em 0.4em;
   background: var(--code-bg);
-  border-radius: 4px;
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-sm);
 }
 
 pre {
-  background: linear-gradient(135deg, var(--code-bg), #1a2337);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--code-bg);
+  border: 1px solid var(--code-border);
+  border-radius: var(--radius-md);
   padding: 1.25rem;
   overflow-x: auto;
   margin: 1.5rem 0;
@@ -113,11 +152,12 @@ pre {
 pre code {
   padding: 0;
   background: none;
+  border: none;
 }
 
 /* 引用 */
 blockquote {
-  border-left: 4px solid var(--accent);
+  border-left: 3px solid var(--accent);
   padding-left: 1rem;
   margin: 1.5rem 0;
   color: var(--text-secondary);
@@ -141,30 +181,18 @@ hr {
   margin: 2rem 0;
 }
 
-/* 科技感发光效果 */
-[data-theme="dark"] h1,
-[data-theme="dark"] h2,
-[data-theme="dark"] h3 {
-  text-shadow: 0 0 30px var(--accent-glow);
-}
-
-[data-theme="dark"] a:hover {
-  text-shadow: 0 0 10px var(--accent-glow);
-}
-
 /* 卡片 */
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .card:hover {
   border-color: var(--accent);
-  box-shadow: 0 0 20px var(--accent-glow);
-  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 /* 按钮 */
@@ -172,41 +200,20 @@ hr {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
-  color: white;
+  padding: 0.625rem 1.25rem;
+  background: var(--accent);
+  color: #ffffff;
   border: none;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .btn:hover {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-/* 隐藏类 */
-.hidden {
-  display: none !important;
-}
-
-/* 动画 */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.fade-up {
-  animation: fade-up 0.5s ease forwards;
+  background: var(--accent-hover);
+  box-shadow: var(--shadow-sm);
 }
 
 /* 选择文本样式 */
